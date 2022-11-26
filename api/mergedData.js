@@ -1,39 +1,30 @@
-// for merged promise
-
-// import client from '../utils/client';
-import { deleteSingleAuthor, getSingleAuthor } from './authorData';
-import { deleteBook, getBooksByAuthor, getSingleBook } from './bookData';
-// API CALLS FOR BOOKS
+import { getSingleBook, deleteBook } from './bookData';
+import { getAuthorBooks, getSingleAuthor, deleteAuthor } from './authorData';
 
 const getBookDetails = (firebaseKey) => new Promise((resolve, reject) => {
-  getSingleBook(firebaseKey).then((bookObj) => {
-    getSingleAuthor(bookObj.author_id).then((authorObject) => resolve({ ...bookObj, authorObject }));
-  })
-    .catch(reject);
+  // GET SINGLE BOOK
+  getSingleBook(firebaseKey).then((bookObject) => {
+    getSingleAuthor(bookObject.author_id)
+      .then((authorObject) => resolve({ ...bookObject, authorObject }));
+  }).catch(reject);
+  // GET AUTHOR
 });
 
-const getAuthorBooks = async (firebaseKey) => {
-  const author = await getSingleAuthor(firebaseKey);
-  const authorBooks = await getBooksByAuthor(author.firebaseKey);
-
-  return { ...author, authorBooks };
-};
-
-// const getBookDetails = async (firebaseKey) => {
-//   const bookObject = await getSingleBook(firebaseKey);
-//   const authorObject = await getSingleAuthor(bookObject.author_id);
-
-//   return { ...bookObject, authorObject };
-// };
+const getAuthorDetails = (firebaseKey) => new Promise((resolve, reject) => {
+  getSingleAuthor(firebaseKey).then((authorObject) => {
+    getAuthorBooks(firebaseKey)
+      .then((bookArray) => resolve({ ...authorObject, bookArray }));
+  }).catch(reject);
+});
 
 const deleteAuthorBooksRelationship = (firebaseKey) => new Promise((resolve, reject) => {
-  getBooksByAuthor(firebaseKey).then((booksArray) => {
-    const deleteBookPromises = booksArray.map((book) => deleteBook(book.firebaseKey));
+  getAuthorBooks(firebaseKey).then((authorBooksArray) => {
+    const deleteBookPromises = authorBooksArray.map((book) => deleteBook(book.firebaseKey));
+
     Promise.all(deleteBookPromises).then(() => {
-      deleteSingleAuthor(firebaseKey).then(resolve);
+      deleteAuthor(firebaseKey).then(resolve);
     });
-  })
-    .catch(reject);
+  }).catch(reject);
 });
 
-export { getBookDetails, getAuthorBooks, deleteAuthorBooksRelationship };
+export { getBookDetails, getAuthorDetails, deleteAuthorBooksRelationship };
