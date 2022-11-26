@@ -86,7 +86,10 @@ const booksOnSale = () => new Promise((resolve, reject) => {
     },
   })
     .then((response) => response.json())
-    .then((data) => resolve(Object.values(data)))
+    .then((data) => {
+      const onSale = Object.values(data).filter((item) => item.sale);
+      resolve(onSale);
+    })
     .catch(reject);
 });
 
