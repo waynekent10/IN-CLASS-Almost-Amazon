@@ -11,7 +11,9 @@ const viewAuthor = (obj) => {
   </div>;`;
 
   obj.authorBooks.map((book) => {
-    domString += `<div class="text-white ms-5 details">
+    domString += `
+    <div class="mt-5 d-flex flex-wrap">
+    <div class="text-white ms-5 details">
       <h5>${book.title}  ${book.favorite ? '<span class="badge bg-danger"><i class="fa fa-heart" aria-hidden="true"></i></span>' : ''}</h5>
       <p>${book.description || ''}</p>
       <hr>
@@ -24,4 +26,3 @@ const viewAuthor = (obj) => {
 };
 
 export default viewAuthor;
-  
