@@ -4,7 +4,7 @@ const endpoint = client.databaseURL;
 
 // GET ALL AUTHORS
 const getAuthors = (uid) => new Promise((resolve, reject) => {
-  fetch(`${endpoint}/authors.json?orderBy"uid"&equalTo="${uid}"`, {
+  fetch(`${endpoint}/authors.json?orderBy"uid"andequalTo="${uid}"`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

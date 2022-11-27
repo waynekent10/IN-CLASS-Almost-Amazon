@@ -69,7 +69,7 @@ const domEvents = (user) => {
       console.warn('EDIT AUTHOR', e.target.id);
       // console.warn(e.target.id.split('--'));
       const [, firebaseKey] = e.target.id.split('--');
-      getSingleAuthor(firebaseKey).then((authorObject) => addAuthorForm(authorObject));
+      getSingleAuthor(firebaseKey).then((authorObj) => addAuthorForm(authorObj));
     }
     // CLICK EVENT FOR VIEW AUTHOR DETAILS
     if (e.target.id.includes('view-author-btn')) {

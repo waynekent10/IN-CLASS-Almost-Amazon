@@ -6,7 +6,7 @@ const endpoint = client.databaseURL;
 
 // TODO: GET BOOKS
 const getBooks = (uid) => new Promise((resolve, reject) => {
-  fetch(`${endpoint}/books.json?orderBy="uid"&equalTo=${uid}`, {
+  fetch(`${endpoint}/books.json?orderBy="uid"&equalTo="${uid}"`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -79,7 +79,7 @@ const updateBook = (payload) => new Promise((resolve, reject) => {
 
 // TODO: FILTER BOOKS ON SALE
 const booksOnSale = (uid) => new Promise((resolve, reject) => {
-  fetch(`${endpoint}/books.json?orderBy="uid"&equalTo=${uid}`, {
+  fetch(`${endpoint}/books.json?orderBy="uid"&equalTo="${uid}"`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
