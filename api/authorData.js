@@ -3,8 +3,8 @@ import client from '../utils/client';
 const endpoint = client.databaseURL;
 
 // GET ALL AUTHORS
-const getAuthors = () => new Promise((resolve, reject) => {
-  fetch(`${endpoint}/authors.json`, {
+const getAuthors = (uid) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/authors.json?orderBy"uid"&equalTo="${uid}"`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -17,14 +17,17 @@ const getAuthors = () => new Promise((resolve, reject) => {
 
 // Favorite Authors
 const getFavoriteAuthors = () => new Promise((resolve, reject) => {
-  fetch(`${endpoint}/authors.json?orderBy="favorite"&equalTo=true`, {
+  fetch(`${endpoint}/authors.json?orderBy="uid"&equalTo=""`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     },
   })
     .then((response) => response.json())
-    .then((data) => resolve(Object.values(data)))
+    .then((data) => {
+      const favoriteAuthor = Object.values(data).filter((item) => item.favorite);
+      resolve(favoriteAuthor);
+    })
     .catch(reject);
 });
 
@@ -82,7 +85,6 @@ const updateAuthor = (payload) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-// TODO: GET A SINGLE AUTHOR'S BOOKS
 const getAuthorBooks = (firebaseKey) => new Promise((resolve, reject) => {
   fetch(`${endpoint}/books.json?orderBy="author_id"&equalTo=${firebaseKey}`, {
     method: 'GET',
@@ -94,12 +96,13 @@ const getAuthorBooks = (firebaseKey) => new Promise((resolve, reject) => {
     .then((data) => resolve(Object.values(data)))
     .catch(reject);
 });
+
 export {
   getAuthors,
   createAuthor,
   getSingleAuthor,
   deleteAuthor,
   updateAuthor,
-  getAuthorBooks,
-  getFavoriteAuthors
+  getFavoriteAuthors,
+  getAuthorBooks
 };
