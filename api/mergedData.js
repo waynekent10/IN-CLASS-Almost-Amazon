@@ -1,15 +1,13 @@
 import { getSingleBook, deleteBook } from './bookData';
-import { getAuthorBooks, getSingleAuthor, deleteAuthor } from './authorData';
+import { getSingleAuthor, deleteAuthor, getAuthorBooks } from './authorData';
 
 const getBookDetails = (firebaseKey) => new Promise((resolve, reject) => {
-  // GET SINGLE BOOK
   getSingleBook(firebaseKey).then((bookObject) => {
     getSingleAuthor(bookObject.author_id)
       .then((authorObject) => resolve({ ...bookObject, authorObject }));
   }).catch(reject);
   // GET AUTHOR
 });
-
 const getAuthorDetails = (firebaseKey) => new Promise((resolve, reject) => {
   getSingleAuthor(firebaseKey).then((authorObject) => {
     getAuthorBooks(firebaseKey)

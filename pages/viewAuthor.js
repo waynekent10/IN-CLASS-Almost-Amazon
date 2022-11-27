@@ -20,6 +20,13 @@ const viewAuthor = (obj) => {
       <p>${book.sale ? `<span class="badge bg-info sale-badge"><i class="fa fa-bell" aria-hidden="true"></i> Sale</span>
         $${book.price}` : `$${book.price}`}</p>
        </div>
+     <div class="d-flex flex-column">
+     <img src=${book.image} alt=${book.title} style="width: 300px;">
+     <div class="mt-5">
+       <i id="edit-book-btn--${book.firebaseKey}" class="fas fa-edit btn btn-info"></i>
+       <i id="delete-book--${book.firebaseKey}" class="btn btn-danger fas fa-trash-alt"></i>
+     </div>
+   </div>   
        </div>`;
     return renderToDOM('#view', domString);
   });
